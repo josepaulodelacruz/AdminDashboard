@@ -11,19 +11,19 @@ import { useState } from 'react'
 import CircularProgress from "@mui/material/CircularProgress"
 import LoadingHud from "@/Components/Modal/LoadingHud"
 import StringRoutes from "@/Constants/stringRoutes"
+import useLoginMutation from '@/Hooks/Auth/useLoginMutation'
 
 const LoginPage = () => {
   const theme = useTheme()
   const { gradients } = theme.palette as { gradients?: any }
   const [isLoading, setIsLoading] = useState(false)
+  const { mutateAsync: login } = useLoginMutation() 
 
   let backgroundValue = linearGradient(gradients.info.main, gradients.info.state);
 
-  const _handleLogin = () => {
-    setIsLoading(true)
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 5000)
+  const _handleLogin = async () => {
+    const { data } = await login({email: "delacruzjosepaulo@gmail.com", password: 'password12123'})
+    console.log(data);
   }
 
   return (
