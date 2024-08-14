@@ -9,6 +9,7 @@ interface LoginResponse {
 }
 
 const LoginMutation = <T>() =>
+  //<DataResponseAPI, APIERROR, UIRequest>
   useMutation<LoginResponse, AxiosError, T>((creds) => {
     console.log(creds);
     return client.post('/api/auth/login', creds)
