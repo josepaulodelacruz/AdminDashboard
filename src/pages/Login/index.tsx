@@ -5,25 +5,36 @@ import GoogleIcon from '@mui/icons-material/Google'
 import FacebookIcon from '@mui/icons-material/FacebookOutlined'
 import InputTextField from "@/Components/InputTextField"
 import PrimaryButton from "@/Components/Button/PrimaryButton"
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { MainSpan, SubSpan } from "@/Components/Labels/Spans"
 import { useState } from 'react'
 import CircularProgress from "@mui/material/CircularProgress"
 import LoadingHud from "@/Components/Modal/LoadingHud"
 import StringRoutes from "@/Constants/stringRoutes"
 import useLoginMutation from '@/Hooks/Auth/useLoginMutation'
+import { AxiosError, isAxiosError } from "axios"
 
 const LoginPage = () => {
   const theme = useTheme()
   const { gradients } = theme.palette as { gradients?: any }
   const [isLoading, setIsLoading] = useState(false)
-  const { mutateAsync: login } = useLoginMutation() 
+  const { mutateAsync: login } = useLoginMutation()
+  const navigate = useNavigate()
 
   let backgroundValue = linearGradient(gradients.info.main, gradients.info.state);
 
   const _handleLogin = async () => {
-    const { data } = await login({email: "delacruzjosepaulo@gmail.com", password: 'password12123'})
-    console.log(data);
+    try {
+      const { data } = await login({ email: "delacruzjosepaulo@gmail.com", password: 'password1233' })
+
+      if(!data.isError) {
+        navigate(StringRoutes.dashboard)
+      }
+    } catch (error: unknown) {
+      if(isAxiosError<{message: string}>(error)) {
+        
+      }
+    }
   }
 
   return (
