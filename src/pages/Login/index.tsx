@@ -12,7 +12,7 @@ import CircularProgress from "@mui/material/CircularProgress"
 import LoadingHud from "@/Components/Modal/LoadingHud"
 import StringRoutes from "@/Constants/stringRoutes"
 import useLoginMutation from '@/Hooks/Auth/useLoginMutation'
-import { AxiosError, isAxiosError } from "axios"
+import { isAxiosError } from "axios"
 
 const LoginPage = () => {
   const theme = useTheme()
@@ -25,15 +25,19 @@ const LoginPage = () => {
 
   const _handleLogin = async () => {
     try {
+      setIsLoading(true)
       const { data } = await login({ email: "delacruzjosepaulo@gmail.com", password: 'password1233' })
 
-      if(!data.isError) {
+      if (!data.isError) {
         navigate(StringRoutes.dashboard)
       }
     } catch (error: unknown) {
-      if(isAxiosError<{message: string}>(error)) {
-        
+      if (isAxiosError<{ message: string }>(error)) {
+        console.error("ui error: ", error.message)
+
       }
+    } finally {
+      setIsLoading(false)
     }
   }
 

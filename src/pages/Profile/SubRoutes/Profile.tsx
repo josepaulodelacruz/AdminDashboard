@@ -6,6 +6,8 @@ import CameraIcon from '@mui/icons-material/CameraEnhance'
 import IconButton from '@/Components/Button/IconButton'
 import { MainSpan, SubSpan } from '@/Components/Labels/Spans'
 import LineDivider from '@/Components/LineDivider'
+import SubTitleLabel from '@/Components/Labels/SubTitle'
+import { Edit } from '@mui/icons-material'
 
 const Profile = () => {
   const theme = useTheme()
@@ -19,13 +21,13 @@ const Profile = () => {
     <div className="flex flex-col relative px-1 ">
       <Paper className='h-[280px] w-full rounded-md' sx={{ background: coverBackground }}>
         <BorderedButton style={{ float: 'right', padding: '0.6rem', color: 'white', borderColor: 'white', marginTop: '1rem', marginRight: '1rem' }} >
-          <CameraIcon fontSize='small' style={{marginRight: '0.4rem'}}/>
+          <CameraIcon fontSize='small' style={{ marginRight: '0.4rem' }} />
           <span>UPDATE COVER</span>
         </BorderedButton>
       </Paper>
 
-      <div className='grid grid-cols-12 gap-4 mx-5 flex-grow rounded-md top-[-80px] relative'>
-        <div className='md:col-span-3 col-span-12 bg-white rounded-md shadow-md '>
+      <div className='flex flex-row gap-4 mx-5 flex-grow rounded-md top-[-80px] relative'>
+        <div className='flex-[0.3] bg-white rounded-md shadow-md '>
 
           <div className='h-[175px] relative flex flex-col items-center justify-center'>
 
@@ -55,10 +57,25 @@ const Profile = () => {
             <LineDivider />
           </div>
 
+          <div className='p-3 flex flex-col'>
+            <div className='flex flex-row justify-between items-center'>
+              <MainSpan className='text-sm font-bold'>Profile Details</MainSpan>
+
+              <IconButton >
+                <Edit />
+              </IconButton>
+
+            </div>
+            <br />
+            <SubSpan>Address</SubSpan>
+            <SubSpan className='text-sm bg-gray-100 p-2 text-left rounde-md text-black font-normal'>Blk 24 Lot 18 Phase 2 Saint Joseph Vilalge 6. Brgy. Butong Cabuyao Laguna</SubSpan>
+
+          </div>
+
           <div className='h-[400px]'></div>
         </div>
 
-        <div className='md:col-span-9 col-span-12'>test</div>
+        <div className='bg-white flex self-start flex-1'>test</div>
       </div>
 
 
