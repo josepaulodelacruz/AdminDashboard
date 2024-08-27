@@ -12,21 +12,28 @@ import CircularProgress from "@mui/material/CircularProgress"
 import LoadingHud from "@/Components/Modal/LoadingHud"
 import StringRoutes from "@/Constants/stringRoutes"
 import useLoginMutation from '@/Hooks/Auth/useLoginMutation'
+import Box from '@mui/material/Box'
 import { isAxiosError } from "axios"
 
 const LoginPage = () => {
   const theme = useTheme()
-  const { gradients } = theme.palette as { gradients?: any }
+  const { gradients, badgeColors } = theme.palette as { gradients?: any, badgeColors?: { error?: any } }
   const [isLoading, setIsLoading] = useState(false)
   const { mutateAsync: login } = useLoginMutation()
   const navigate = useNavigate()
+  let isError = true
 
   let backgroundValue = linearGradient(gradients.info.main, gradients.info.state);
 
-  const _handleLogin = async () => {
+  const _handleLogin = async (e: React.FormEvent<HTMLInputElement>) => {
+    const form = e.target as HTMLFormElement;
+    const username = (form[0] as HTMLInputElement).value
+    const password = (form[1] as HTMLInputElement).value
+    e.preventDefault()
+
     try {
       setIsLoading(true)
-      const { data } = await login({ email: "delacruzjosepaulo@gmail.com", password: 'password1233' })
+      const { data } = await login({ email: username, password: password })
 
       if (!data.isError) {
         navigate(StringRoutes.dashboard)
@@ -44,7 +51,7 @@ const LoginPage = () => {
   return (
     <>
 
-      <div style={{ background: backgroundValue }} className="flex flex-col justify-center items-center w-[320px] rounded-lg shadow-lg mx-auto h-[100px] z-10 relative" >
+      <div style={{ background: backgroundValue }} className="flex flex-col justify-center top-[-130px] items-center w-[320px] rounded-lg shadow-lg mx-auto h-[100px] z-10 relative" >
         <h3 className="text-lg font-semibold text-white">Login in with</h3>
 
         <div className="flex flex-row">
@@ -58,20 +65,29 @@ const LoginPage = () => {
 
       </div>
 
-      <div className="absolute h-full w-full bg-white rounded-xl shadow-xl top-5 pt-24 px-4 flex flex-col " >
+      <Box
+        onSubmit={_handleLogin}
+        component="form"
+        className="absolute top-[-100%]  w-full bg-white rounded-xl shadow-xl pt-20 py-4 px-4 flex flex-col " >
+
 
         <div className="">
           <div className="py-2">
-            <InputTextField placeholder="Email" label='Username' />
+            <InputTextField name="username" placeholder="Email" label='Username' />
           </div>
           <div className="py-2">
-            <InputTextField placeholder="Enter Password" label="Password" />
+            <InputTextField name="password" placeholder="Enter Password" label="Password" />
           </div>
         </div>
 
+        <div className=" rounded-md px-2 border-red-600 border-[0.1rem]" style={{ backgroundColor: badgeColors?.error.background, display: !isError ? 'none' : 'block' }}>
+          <SubSpan style={{ color: badgeColors?.error.text }}>Incorrect Username or Password</SubSpan>
+        </div>
+
+
         <PrimaryButton
+          type="submit"
           disabled={isLoading}
-          onClick={_handleLogin}
           backgroundValue={backgroundValue}
           style={{ marginTop: '1rem', marginBottom: '1rem', padding: '0.55rem' }}
         >
@@ -81,7 +97,6 @@ const LoginPage = () => {
           }
         </PrimaryButton>
 
-
         <div className="self-center flex-row flex items-center ">
           <SubSpan style={{ paddingRight: '5px' }}>Don't have an account? </SubSpan>
           <Link to={StringRoutes.register}>
@@ -90,7 +105,7 @@ const LoginPage = () => {
         </div>
 
 
-      </div>
+      </Box>
       <LoadingHud isLoading={isLoading} />
     </>
   )

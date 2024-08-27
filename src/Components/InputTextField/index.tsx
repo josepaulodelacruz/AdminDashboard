@@ -3,14 +3,17 @@ import TextField from '@mui/material/TextField'
 interface InputTextFieldProps {
   placeholder?: string
   label?: string
+  name?: string
 }
 
 const InputTextField = ({
   placeholder,
-  label
+  label,
+  name
 } : InputTextFieldProps ) => {
   return (
     <TextField
+      name={name!}
       InputLabelProps={{
         shrink: true,
         style: { fontSize: '16px', lineHeight: '1rem'}

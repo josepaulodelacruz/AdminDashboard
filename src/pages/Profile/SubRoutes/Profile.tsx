@@ -61,14 +61,17 @@ const Profile = () => {
             <div className='flex flex-row justify-between items-center'>
               <MainSpan className='text-sm font-bold'>Profile Details</MainSpan>
 
-              <IconButton >
-                <Edit />
-              </IconButton>
+              <BorderedButton variant='info' >
+                Edit
+              </BorderedButton>
+            </div>
+            <div>
 
             </div>
-            <br />
-            <SubSpan>Address</SubSpan>
-            <SubSpan className='text-sm bg-gray-100 p-2 text-left rounde-md text-black font-normal'>Blk 24 Lot 18 Phase 2 Saint Joseph Vilalge 6. Brgy. Butong Cabuyao Laguna</SubSpan>
+            <SubSpan style={{padding: '0.5rem 0 0.5rem'}}>Address</SubSpan>
+            <SubSpan className='text-[0.65rem] bg-gray-50 text-left rounde-md font-light' style={{color: 'black'}}>
+              Blk 24 Lot 18 Phase 2 Saint Joseph Vilalge 6. Brgy. Butong Cabuyao Laguna
+            </SubSpan>
 
           </div>
 

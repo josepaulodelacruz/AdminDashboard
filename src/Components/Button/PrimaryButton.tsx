@@ -11,9 +11,10 @@ interface PrimaryButtonProps {
   style?: React.CSSProperties,
   disabled?: boolean,
   onClick?: () => void,
+  type?: "submit" | "reset" | "button" | undefined,
 }
 
-const PrimaryButton = ({ style, backgroundValue, children, className, onClick, disabled = false } : PrimaryButtonProps) => {
+const PrimaryButton = ({ type, style, backgroundValue, children, className, onClick, disabled = false } : PrimaryButtonProps) => {
 
   const theme = useTheme()
   const { gradients } = theme.palette as { gradients?: any }
@@ -23,6 +24,7 @@ const PrimaryButton = ({ style, backgroundValue, children, className, onClick, d
 
   return (
     <Button
+      type={type!}
       onClick={onClick!}
       disabled={disabled!}
       style={style!}

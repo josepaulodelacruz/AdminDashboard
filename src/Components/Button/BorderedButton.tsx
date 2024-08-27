@@ -8,6 +8,7 @@ interface BorderedButtonProps {
   children?: ReactNode
   onClick?: () => void,
   style?: React.CSSProperties,
+  variant?: string
 }
 
 const BorderedButton = ({ 
@@ -15,11 +16,21 @@ const BorderedButton = ({
   children,
   onClick,
   style,
+  variant = 'primary',
+
 }: BorderedButtonProps) => {
   const theme = useTheme()
   const { gradients } = theme.palette as { gradients?: any }
 
   let defaultLabel = children ?? 'OKAY';
+
+  let backgroundColor = () => {
+    if(variant! === 'info') {
+      return gradients.info.main
+    } 
+
+    return gradients.dark.main //default color
+  }
 
   return (
     <Button
@@ -29,10 +40,10 @@ const BorderedButton = ({
       style={style!}
       sx={{
         background: backgroundValue,
-        borderColor: gradients.dark.main,
-        color: gradients.dark.main,
+        borderColor: backgroundColor,
+        color: backgroundColor,
         '&:hover': {
-          borderColor: gradients.dark.main,
+          borderColor: backgroundColor 
         },
       }}
     >
