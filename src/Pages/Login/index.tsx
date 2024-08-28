@@ -7,23 +7,34 @@ import InputTextField from "@/Components/InputTextField"
 import PrimaryButton from "@/Components/Button/PrimaryButton"
 import { Link, useNavigate } from 'react-router-dom'
 import { MainSpan, SubSpan } from "@/Components/Labels/Spans"
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CircularProgress from "@mui/material/CircularProgress"
 import LoadingHud from "@/Components/Modal/LoadingHud"
 import StringRoutes from "@/Constants/stringRoutes"
 import useLoginMutation from '@/Hooks/Auth/useLoginMutation'
 import Box from '@mui/material/Box'
 import { isAxiosError } from "axios"
+import ErrorLabel from "@/Components/Labels/ErrorLabel"
+import { ErrorResponse, GenericResponse } from "@/Types/Response"
 
 const LoginPage = () => {
   const theme = useTheme()
-  const { gradients, badgeColors } = theme.palette as { gradients?: any, badgeColors?: { error?: any } }
+  const { gradients } = theme.palette as { gradients?: any, badgeColors?: { error?: any } }
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<ErrorResponse>({isError: false})
   const { mutateAsync: login } = useLoginMutation()
   const navigate = useNavigate()
-  let isError = true
 
   let backgroundValue = linearGradient(gradients.info.main, gradients.info.state);
+
+  useEffect(() => {
+    if(error.isError) {
+      setTimeout(() => {
+        setError({isError: false})
+      }, 3500)
+    }
+
+  }, [error])
 
   const _handleLogin = async (e: React.FormEvent<HTMLInputElement>) => {
     const form = e.target as HTMLFormElement;
@@ -38,10 +49,11 @@ const LoginPage = () => {
       if (!data.isError) {
         navigate(StringRoutes.dashboard)
       }
-    } catch (error: unknown) {
-      if (isAxiosError<{ message: string }>(error)) {
-        console.error("ui error: ", error.message)
 
+    } catch (error: unknown) {
+      if (isAxiosError<GenericResponse>(error)) {
+        let errorMessage = error.response?.data.title ?? error.response?.data.message
+        setError({isError: true, message: errorMessage})
       }
     } finally {
       setIsLoading(false)
@@ -80,10 +92,7 @@ const LoginPage = () => {
           </div>
         </div>
 
-        <div className=" rounded-md px-2 border-red-600 border-[0.1rem]" style={{ backgroundColor: badgeColors?.error.background, display: !isError ? 'none' : 'block' }}>
-          <SubSpan style={{ color: badgeColors?.error.text }}>Incorrect Username or Password</SubSpan>
-        </div>
-
+        <ErrorLabel isError={error.isError}>{error.message!}.</ErrorLabel>
 
         <PrimaryButton
           type="submit"
