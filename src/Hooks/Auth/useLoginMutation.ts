@@ -4,7 +4,7 @@ import { AxiosError } from 'axios'
 import client from '@/Config/client'
 
 interface LoginResponse {
-  data: { statusCode: number, message: string, isError: boolean, body: {}}
+  data: { statusCode: number, message: string, isError: boolean, body: { token: string }}
 }
 
 const LoginMutation = <T>() =>

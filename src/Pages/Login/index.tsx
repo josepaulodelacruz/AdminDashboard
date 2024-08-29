@@ -16,6 +16,7 @@ import Box from '@mui/material/Box'
 import { isAxiosError } from "axios"
 import ErrorLabel from "@/Components/Labels/ErrorLabel"
 import { ErrorResponse, GenericResponse } from "@/Types/Response"
+import useAuth from "@/Hooks/Auth/useAuth"
 
 const LoginPage = () => {
   const theme = useTheme()
@@ -23,6 +24,7 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<ErrorResponse>({isError: false})
   const { mutateAsync: login } = useLoginMutation()
+  const { onSave } = useAuth()
   const navigate = useNavigate()
 
   let backgroundValue = linearGradient(gradients.info.main, gradients.info.state);
@@ -47,12 +49,14 @@ const LoginPage = () => {
       const { data } = await login({ email: username, password: password })
 
       if (!data.isError) {
+        onSave(data.body.token)
         navigate(StringRoutes.dashboard)
       }
 
     } catch (error: unknown) {
       if (isAxiosError<GenericResponse>(error)) {
         let errorMessage = error.response?.data.title ?? error.response?.data.message
+        errorMessage = errorMessage ?? error.message
         setError({isError: true, message: errorMessage})
       }
     } finally {

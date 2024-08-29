@@ -3,8 +3,8 @@ export type GenericResponse = {
   data: Object,
   isError: boolean,
   message: string,
-  title: stringa,
-  statusCode: string,
+  title: string,
+  statusCode: string;
 }
 
 export type ErrorResponse = {
