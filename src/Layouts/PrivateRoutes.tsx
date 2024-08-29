@@ -7,7 +7,6 @@ const PrivateRoutes = () => {
   const { token } = useAuth()
 
   if(!token) return <Navigate to={StringRoutes.login}/>
-
  
   return <Outlet />
 }

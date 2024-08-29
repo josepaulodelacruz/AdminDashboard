@@ -1,6 +1,4 @@
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
-import { useEffect, useState  } from 'react';
-
 
 interface AutohideSnackbarProps {
   isOpen: boolean,

@@ -6,8 +6,6 @@ import CameraIcon from '@mui/icons-material/CameraEnhance'
 import IconButton from '@/Components/Button/IconButton'
 import { MainSpan, SubSpan } from '@/Components/Labels/Spans'
 import LineDivider from '@/Components/LineDivider'
-import SubTitleLabel from '@/Components/Labels/SubTitle'
-import { Edit } from '@mui/icons-material'
 
 const Profile = () => {
   const theme = useTheme()
