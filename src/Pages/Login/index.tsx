@@ -33,7 +33,7 @@ const LoginPage = () => {
     if(error.isError) {
       setTimeout(() => {
         setError({isError: false})
-      }, 3500)
+      }, 5500)
     }
 
   }, [error])
@@ -92,7 +92,7 @@ const LoginPage = () => {
             <InputTextField name="username" placeholder="Email" label='Username' />
           </div>
           <div className="py-2">
-            <InputTextField name="password" placeholder="Enter Password" label="Password" />
+            <InputTextField type='password' name="password" placeholder="Enter Password" label="Password" />
           </div>
         </div>
 

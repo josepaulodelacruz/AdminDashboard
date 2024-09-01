@@ -8,12 +8,20 @@ import PrimaryButton from "@/Components/Button/PrimaryButton"
 import { Link } from 'react-router-dom'
 import { ArrowBackIos } from "@mui/icons-material"
 import StringRoutes from '@/Constants/stringRoutes'
+import Box from '@mui/material/Box'
+import { useState } from "react"
 
 const RegisterPage = () => {
   const theme = useTheme()
   const { gradients } = theme.palette as { gradients?: any }
+  const [isCheck, setIsCheck] = useState<boolean>(false)
 
   let backgroundValue = linearGradient(gradients.info.main, gradients.info.state)
+
+  const _handleSubmit = (e: React.FormEvent<HTMLInputElement>) => {
+    e.preventDefault()
+
+  }
 
   return (
     <>
@@ -32,18 +40,18 @@ const RegisterPage = () => {
 
       </div>
 
-      <div className="absolute top-[-100%] w-full bg-white rounded-xl shadow-xl pt-20 px-4 flex flex-col " >
+      <Box 
+        onSubmit={_handleSubmit}
+        component="form" className="absolute top-[-100%] w-full bg-white rounded-xl shadow-xl pt-20 px-4 flex flex-col " >
 
         <div className="flex-grow">
 
-          <form>
-            <InputTextField placeholder="Email" label='Email' />
-            <InputTextField placeholder="Enter Password" label="Password" />
-            <InputTextField placeholder="Enter Confirm Password" label='Confirm Password' />
-          </form>
+          <InputTextField placeholder="Email" label='Email' />
+          <InputTextField placeholder="Enter Password" label="Password" />
+          <InputTextField placeholder="Enter Confirm Password" label='Confirm Password' />
 
           <span className="flex items-center text-[0.75rem] text-gray-500 mt-2">
-            <input type='checkbox' style={{ marginRight: '0.40rem' }} />
+            <input onClick={() => setIsCheck(prevState => !prevState)} type='checkbox' style={{ marginRight: '0.40rem' }} />
             You agree to the terms and condition
           </span>
         </div>
@@ -55,7 +63,10 @@ const RegisterPage = () => {
           </Link>
 
           <PrimaryButton
+            type='submit'
+            disabled={!isCheck}
             backgroundValue={backgroundValue}
+            
             style={{ marginTop: '1rem', marginBottom: '1rem', padding: '0.55rem' }}
           >
             SIGN UP
@@ -63,7 +74,7 @@ const RegisterPage = () => {
 
         </div>
 
-      </div>
+      </Box>
     </>
   )
 }

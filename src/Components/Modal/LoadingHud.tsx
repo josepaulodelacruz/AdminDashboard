@@ -11,7 +11,9 @@ const LoadingHud: React.FC<LoadingHudProps> = ({ isLoading = false }) => {
   return (
     <div 
         style={{ cursor: 'wait'}}
-        className="fixed inset-0 bg-opacity-50 z-50 flex items-center justify-center" />
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-10" >
+      
+    </div>
   )
 }
 

@@ -4,15 +4,18 @@ interface InputTextFieldProps {
   placeholder?: string
   label?: string
   name?: string
+  type?: React.HTMLInputTypeAttribute
 }
 
 const InputTextField = ({
   placeholder,
   label,
-  name
+  name,
+  type,
 } : InputTextFieldProps ) => {
   return (
     <TextField
+      type={type!}
       name={name!}
       InputLabelProps={{
         shrink: true,

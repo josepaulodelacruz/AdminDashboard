@@ -55,25 +55,7 @@ const Profile = () => {
             <LineDivider />
           </div>
 
-          <div className='p-3 flex flex-col'>
-            <div className='flex flex-row justify-between items-center'>
-              <MainSpan className='text-sm font-bold'>Profile Details</MainSpan>
-
-              <BorderedButton variant='info' >
-                Edit
-              </BorderedButton>
-            </div>
-            <div>
-
-            </div>
-            <SubSpan style={{padding: '0.5rem 0 0.5rem'}}>Address</SubSpan>
-            <SubSpan className='text-[0.65rem] bg-gray-50 text-left rounde-md font-light' style={{color: 'black'}}>
-              Blk 24 Lot 18 Phase 2 Saint Joseph Vilalge 6. Brgy. Butong Cabuyao Laguna
-            </SubSpan>
-
-          </div>
-
-          <div className='h-[400px]'></div>
+          
         </div>
 
         <div className='bg-white flex self-start flex-1'>test</div>
