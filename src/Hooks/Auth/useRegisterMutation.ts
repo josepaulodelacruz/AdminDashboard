@@ -14,7 +14,7 @@ interface RegisterResponse {
 
 
 const useRegisterMutation = <T>() => {
-  useMutation<RegisterResponse, AxiosError, T>((creds) => {
+  return useMutation<RegisterResponse, AxiosError, T>((creds) => {
     return client.post('/api/auth/register', creds)
   })
 }

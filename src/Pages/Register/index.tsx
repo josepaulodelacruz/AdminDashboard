@@ -9,17 +9,61 @@ import { Link } from 'react-router-dom'
 import { ArrowBackIos } from "@mui/icons-material"
 import StringRoutes from '@/Constants/stringRoutes'
 import Box from '@mui/material/Box'
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import useRegisterMutation from "@/Hooks/Auth/useRegisterMutation"
+import ErrorLabel from "@/Components/Labels/ErrorLabel"
+import { ErrorResponse, GenericResponse } from "@/Types/Response"
+import { isAxiosError } from "axios"
 
 const RegisterPage = () => {
   const theme = useTheme()
   const { gradients } = theme.palette as { gradients?: any }
   const [isCheck, setIsCheck] = useState<boolean>(false)
+  const { mutateAsync: register } = useRegisterMutation()
+  const [error, setError] = useState<ErrorResponse>({ isError: false })
 
   let backgroundValue = linearGradient(gradients.info.main, gradients.info.state)
 
-  const _handleSubmit = (e: React.FormEvent<HTMLInputElement>) => {
-    e.preventDefault()
+  useEffect(() => {
+    if (error.isError) {
+      setTimeout(() => {
+        setError(prevState => {
+          return {
+            message: prevState.message,
+            isError: !prevState.isError
+          }
+        })
+
+      }, 3000)
+    }
+
+  }, [error])
+
+
+
+  const _handleSubmit = async (e: React.FormEvent<HTMLInputElement>) => {
+    try {
+      e.preventDefault()
+      const form = e.target as HTMLFormElement;
+      const email = (form[0] as HTMLInputElement).value
+      const password = (form[1] as HTMLInputElement).value
+      const confirmPassword = (form[2] as HTMLInputElement).value
+
+
+      const { data } = await register({ email: email, password: password })
+
+      if (!data.isError) {
+        console.log('navigate to');
+        console.log(data)
+      }
+
+    } catch (err: unknown) {
+      console.log('error catch')
+      if (isAxiosError<{ message: string }>(err)) {
+        console.error(`show error ${err.message}`)
+        setError({ isError: true, message: err.message })
+      }
+    }
 
   }
 
@@ -40,21 +84,24 @@ const RegisterPage = () => {
 
       </div>
 
-      <Box 
+      <Box
         onSubmit={_handleSubmit}
         component="form" className="absolute top-[-100%] w-full bg-white rounded-xl shadow-xl pt-20 px-4 flex flex-col " >
 
         <div className="flex-grow">
 
-          <InputTextField placeholder="Email" label='Email' />
-          <InputTextField placeholder="Enter Password" label="Password" />
-          <InputTextField placeholder="Enter Confirm Password" label='Confirm Password' />
+          <InputTextField name="email" placeholder="Email" label='Email' />
+          <InputTextField type='password' name="password" placeholder="Enter Password" label="Password" />
+          <InputTextField type='confirm_password' name="confirmPassword" placeholder="Enter Confirm Password" label='Confirm Password' />
 
           <span className="flex items-center text-[0.75rem] text-gray-500 mt-2">
             <input onClick={() => setIsCheck(prevState => !prevState)} type='checkbox' style={{ marginRight: '0.40rem' }} />
             You agree to the terms and condition
           </span>
         </div>
+
+
+        <ErrorLabel isError={error.isError} >{error.message!}</ErrorLabel>
 
         <div className="flex flex-row justify-between">
           <Link to={StringRoutes.login} className="items-center flex text-sm underline " >
@@ -66,8 +113,8 @@ const RegisterPage = () => {
             type='submit'
             disabled={!isCheck}
             backgroundValue={backgroundValue}
-            
-            style={{ marginTop: '1rem', marginBottom: '1rem', padding: '0.55rem' }}
+
+            style={{ marginTop: '0.5rem', marginBottom: '1rem', padding: '0.55rem' }}
           >
             SIGN UP
           </PrimaryButton>
