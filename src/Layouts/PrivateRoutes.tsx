@@ -6,7 +6,7 @@ import StringRoutes from '@/Constants/stringRoutes'
 const PrivateRoutes = () => {
   const { token } = useAuth()
 
-  if(token) return <Navigate to={StringRoutes.login}/>
+  if(!token) return <Navigate to={StringRoutes.login}/>
  
   return <Outlet />
 }

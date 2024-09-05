@@ -5,8 +5,7 @@ const client: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL as string,
   headers: {
     'Content-Type': 'application/json',
-  },
-  timeout: 2000
+  }
 })
 
 client.interceptors.request.use(

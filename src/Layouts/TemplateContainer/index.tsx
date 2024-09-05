@@ -7,6 +7,7 @@ import { RouteModel } from "@/Types"
 import useToggleDrawer from "@/Hooks/Sidenav/useToggleDrawer"
 import { ScrollToTop } from "@/Utils"
 import GenericModal from "@/Components/Modal/GenericModal"
+import useAuth from "@/Hooks/Auth/useAuth"
 
 const TemplateContainer = () => {
   const location = useLocation()
@@ -16,6 +17,7 @@ const TemplateContainer = () => {
   const [routeObject, setRouteObject] = useState<RouteModel>(routes[0])
   const _toggleSidebar = useToggleDrawer()
   const _isSidebarOpen = _toggleSidebar.isOpen
+  const { onRemoveUser } = useAuth()
 
   const handleScroll = () => {
     if (scrollableRef.current) {
@@ -75,7 +77,13 @@ const TemplateContainer = () => {
 
         <GenericModal 
           isOpen={isLogout}
-          onClose={() => setIsLogout(false)}
+          onClick={() => {
+            setIsLogout(true)
+            onRemoveUser()
+          }}
+          onClose={() => {
+            setIsLogout(true)
+          }}
           title="Logout!"
           label="Are you sure you want to logout?"
         />

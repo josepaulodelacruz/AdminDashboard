@@ -5,22 +5,26 @@ import GoogleIcon from '@mui/icons-material/Google'
 import FacebookIcon from '@mui/icons-material/FacebookOutlined'
 import InputTextField from "@/Components/InputTextField"
 import PrimaryButton from "@/Components/Button/PrimaryButton"
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ArrowBackIos } from "@mui/icons-material"
 import StringRoutes from '@/Constants/stringRoutes'
 import Box from '@mui/material/Box'
 import { useState, useEffect } from "react"
 import useRegisterMutation from "@/Hooks/Auth/useRegisterMutation"
 import ErrorLabel from "@/Components/Labels/ErrorLabel"
-import { ErrorResponse, GenericResponse } from "@/Types/Response"
+import { ErrorResponse } from "@/Types/Response"
 import { isAxiosError } from "axios"
+import LoadingHud from "@/Components/Modal/LoadingHud"
 
 const RegisterPage = () => {
   const theme = useTheme()
   const { gradients } = theme.palette as { gradients?: any }
   const [isCheck, setIsCheck] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const { mutateAsync: register } = useRegisterMutation()
   const [error, setError] = useState<ErrorResponse>({ isError: false })
+  const navigate = useNavigate()
+
 
   let backgroundValue = linearGradient(gradients.info.main, gradients.info.state)
 
@@ -49,12 +53,13 @@ const RegisterPage = () => {
       const password = (form[1] as HTMLInputElement).value
       const confirmPassword = (form[2] as HTMLInputElement).value
 
-
+      setIsLoading(true)
       const { data } = await register({ email: email, password: password })
 
       if (!data.isError) {
         console.log('navigate to');
         console.log(data)
+        navigate(StringRoutes.login)
       }
 
     } catch (err: unknown) {
@@ -63,7 +68,10 @@ const RegisterPage = () => {
         console.error(`show error ${err.message}`)
         setError({ isError: true, message: err.message })
       }
+    } finally {
+      setIsLoading(false)
     }
+
 
   }
 
@@ -120,6 +128,8 @@ const RegisterPage = () => {
           </PrimaryButton>
 
         </div>
+
+        <LoadingHud isLoading={isLoading}/>
 
       </Box>
     </>
