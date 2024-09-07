@@ -108,7 +108,6 @@ const RegisterPage = () => {
           </span>
         </div>
 
-
         <ErrorLabel isError={error.isError} >{error.message!}</ErrorLabel>
 
         <div className="flex flex-row justify-between">

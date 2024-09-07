@@ -12,15 +12,15 @@ const InputTextField = ({
   label,
   name,
   type,
-} : InputTextFieldProps ) => {
+}: InputTextFieldProps) => {
   return (
     <TextField
       type={type!}
       name={name!}
       InputLabelProps={{
         shrink: true,
-        style: { fontSize: '16px', lineHeight: '1rem'}
-        
+        style: { fontSize: '16px', lineHeight: '1rem' }
+
       }}
       inputProps={{
         style: { fontSize: '14px' }
