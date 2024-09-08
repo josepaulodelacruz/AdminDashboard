@@ -54,12 +54,7 @@ const RegisterPage = () => {
       const form = e.target as HTMLFormElement;
       const email = (form[0] as HTMLInputElement).value
       const password = (form[1] as HTMLInputElement).value
-      const confirmPassword = (form[2] as HTMLInputElement).value
-
-      if (!confirmPassword || password !== confirmPassword) {
-        setError({ isError: true, message: 'Password not matched.' })
-        return
-      }
+      //const confirmPassword = (form[2] as HTMLInputElement).value
 
       setIsLoading(true)
       const { data } = await register({ email: email, password: password })
