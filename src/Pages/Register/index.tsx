@@ -12,9 +12,10 @@ import Box from '@mui/material/Box'
 import { useState, useEffect } from "react"
 import useRegisterMutation from "@/Hooks/Auth/useRegisterMutation"
 import ErrorLabel from "@/Components/Labels/ErrorLabel"
-import { ErrorResponse } from "@/Types/Response"
+import { ErrorResponse, AxiosGenericResponse } from "@/Types/Response"
 import { isAxiosError } from "axios"
 import LoadingHud from "@/Components/Modal/LoadingHud"
+import AutohideSnackbar from "@/Components/Snackbar"
 
 const RegisterPage = () => {
   const theme = useTheme()
@@ -23,10 +24,12 @@ const RegisterPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const { mutateAsync: register } = useRegisterMutation()
   const [error, setError] = useState<ErrorResponse>({ isError: false })
+  const [showSnackbar, setShowSnackbar] = useState<{ isShow: boolean, message?: string }>({ isShow: false, message: '' })
   const navigate = useNavigate()
 
 
   let backgroundValue = linearGradient(gradients.info.main, gradients.info.state)
+  let snackbarBackgroundColor = linearGradient(gradients.success.main, gradients.success.state)
 
   useEffect(() => {
     if (error.isError) {
@@ -46,38 +49,43 @@ const RegisterPage = () => {
 
 
   const _handleSubmit = async (e: React.FormEvent<HTMLInputElement>) => {
+    e.preventDefault()
     try {
-      e.preventDefault()
       const form = e.target as HTMLFormElement;
       const email = (form[0] as HTMLInputElement).value
       const password = (form[1] as HTMLInputElement).value
       const confirmPassword = (form[2] as HTMLInputElement).value
 
+      if (!confirmPassword || password !== confirmPassword) {
+        setError({ isError: true, message: 'Password not matched.' })
+        return
+      }
+
       setIsLoading(true)
       const { data } = await register({ email: email, password: password })
 
       if (!data.isError) {
-        console.log('navigate to');
-        console.log(data)
-        navigate(StringRoutes.login)
+        setShowSnackbar({ isShow: true, message: 'Registered Successfully. Please wait for a moment' });
+        setTimeout(() => {
+          setShowSnackbar({ isShow: false, message: '' });
+          navigate(StringRoutes.login);
+        }, 3000);
       }
 
-    } catch (err: unknown) {
-      console.log('error catch')
-      if (isAxiosError<{ message: string }>(err)) {
-        console.error(`show error ${err.message}`)
-        setError({ isError: true, message: err.message })
+    } catch (error: unknown) {
+      if (isAxiosError<AxiosGenericResponse>(error)) {
+
+        let errorMessage = error.response?.data.title ?? error.response?.data.message
+        errorMessage = errorMessage ?? error.message;
+
+        setError({ isError: true, message: errorMessage })
+        setIsLoading(false)
       }
-    } finally {
-      setIsLoading(false)
-    }
-
-
+    } 
   }
 
   return (
     <>
-
       <div style={{ background: backgroundValue }} className="flex flex-col top-[-130px] justify-center items-center w-[320px] rounded-lg shadow-lg mx-auto h-[100px] z-10 relative" >
         <h3 className="text-lg font-semibold text-white">Sign up with</h3>
 
@@ -97,7 +105,6 @@ const RegisterPage = () => {
         component="form" className="absolute top-[-100%] w-full bg-white rounded-xl shadow-xl pt-20 px-4 flex flex-col " >
 
         <div className="flex-grow">
-
           <InputTextField name="email" placeholder="Email" label='Email' />
           <InputTextField type='password' name="password" placeholder="Enter Password" label="Password" />
           <InputTextField type='confirm_password' name="confirmPassword" placeholder="Enter Confirm Password" label='Confirm Password' />
@@ -128,7 +135,15 @@ const RegisterPage = () => {
 
         </div>
 
-        <LoadingHud isLoading={isLoading}/>
+        <LoadingHud isLoading={isLoading} />
+
+        <AutohideSnackbar
+          isOpen={showSnackbar.isShow}
+          message={showSnackbar.message!}
+          onEvent={() => setShowSnackbar({ isShow: false })}
+          backgroundColor={snackbarBackgroundColor}
+
+        />
 
       </Box>
     </>

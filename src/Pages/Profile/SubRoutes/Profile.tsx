@@ -6,6 +6,8 @@ import CameraIcon from '@mui/icons-material/CameraEnhance'
 import IconButton from '@/Components/Button/IconButton'
 import { MainSpan, SubSpan } from '@/Components/Labels/Spans'
 import LineDivider from '@/Components/LineDivider'
+import CheckIcon from '@mui/icons-material/CheckCircle'
+import colors from '@/assets/theme/base/colors'
 
 const Profile = () => {
   const theme = useTheme()
@@ -13,6 +15,7 @@ const Profile = () => {
 
   let coverBackground = linearGradient(gradients.secondary.main, gradients.secondary.state)
   let iconColor = linearGradient(gradients.info.main, gradients.info.state)
+  const { success } = colors
 
 
   return (
@@ -49,13 +52,16 @@ const Profile = () => {
           </div>
 
           <MainSpan className='text-center'>Jose Paulo M. Dela Cruz</MainSpan>
-          <SubSpan className='flex justify-center text-sm'>Software Engineer</SubSpan>
+          <div className='flex flex-row justify-center items-center'>
+            <SubSpan className='flex justify-center text-sm font-bold '>Family Head</SubSpan>
+            <CheckIcon fontSize='small' sx={{color: success.main, marginLeft: '0.3rem'}} />
+          </div>
 
           <div className='pt-3'>
             <LineDivider />
           </div>
 
-          
+
         </div>
 
         <div className='bg-white flex self-start flex-1'>test</div>

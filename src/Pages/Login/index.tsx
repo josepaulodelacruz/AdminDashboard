@@ -15,7 +15,7 @@ import useLoginMutation from '@/Hooks/Auth/useLoginMutation'
 import Box from '@mui/material/Box'
 import { isAxiosError } from "axios"
 import ErrorLabel from "@/Components/Labels/ErrorLabel"
-import { ErrorResponse, GenericResponse } from "@/Types/Response"
+import { ErrorResponse, AxiosGenericResponse } from "@/Types/Response"
 import useAuth from "@/Hooks/Auth/useAuth"
 
 const LoginPage = () => {
@@ -54,7 +54,7 @@ const LoginPage = () => {
       }
 
     } catch (error: unknown) {
-      if (isAxiosError<GenericResponse>(error)) {
+      if (isAxiosError<AxiosGenericResponse>(error)) {
         let errorMessage = error.response?.data.title ?? error.response?.data.message
         errorMessage = errorMessage ?? error.message
         setError({isError: true, message: errorMessage})

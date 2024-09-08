@@ -1,5 +1,5 @@
 
-export type GenericResponse = {
+export type AxiosGenericResponse = {
   data: Object,
   isError: boolean,
   message: string,

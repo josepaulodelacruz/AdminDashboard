@@ -92,6 +92,7 @@ const TablesPage = () => {
       </Grid>
 
       <GenericModal
+        onClick={() => null}
         title="Delete an item."
         label="Are you sure you want to delete this item?"
         isOpen={isOpen}
